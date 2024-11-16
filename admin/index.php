@@ -1,7 +1,11 @@
 <?php 
     require_once('inc/essentials.php');
     require_once('inc/db_config.php');
-    
+    session_start();
+   
+    if((isset($_SESSION['adminLogin'])&& $_SESSION['adminLogin'] == true)){
+        redirect('dashboard.php');
+    };
 ?>
 
 <!DOCTYPE html>
@@ -49,11 +53,12 @@
         $res = select($query, $values, "ss");
         if($res-> num_rows == 1){
             $row = mysqli_fetch_row($res);
-            session_start();
+            // session_start();
             $_SESSION['adminLogin'] = true;
             $_SESSION['adminId'] = $row['sr_no'];
+            redirect('dashboard.php');
         }else{
-            alert('error', 'Login failed - Invalid Credentials!'); // Thêm dấu chấm phẩy
+            arlert('error', 'Login failed - Invalid Credentials!'); // Thêm dấu chấm phẩy
         }
     }
 ?>
