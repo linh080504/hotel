@@ -77,27 +77,22 @@
 <div class="container px-4">
         <!-- Swiper -->
   <div class="swiper mySwiper">
-    <div class="swiper-wrapper mb-5">
-      <div class="swiper-slide bg-white text-center overflow-hidden rounded ">
-        <img src="images/about/IMG_17352.jpg" class="w-100">
-        <h5 class="mt-2">Random Name</h5>
-      </div>
-      <div class="swiper-slide bg-white text-center overflow-hidden rounded ">
-        <img src="images/about/IMG_17352.jpg" class="w-100">
-        <h5 class="mt-2">Random Name</h5>
-      </div>
-      <div class="swiper-slide bg-white text-center overflow-hidden rounded ">
-        <img src="images/about/IMG_17352.jpg" class="w-100">
-        <h5 class="mt-2">Random Name</h5>
-      </div>
-      <div class="swiper-slide bg-white text-center overflow-hidden rounded ">
-        <img src="images/about/IMG_17352.jpg" class="w-100">
-        <h5 class="mt-2">Random Name</h5>
-      </div>
-      <div class="swiper-slide bg-white text-center overflow-hidden rounded ">
-        <img src="images/about/IMG_17352.jpg" class="w-100">
-        <h5 class="mt-2">Random Name</h5>
-      </div>
+  <div class="swiper-wrapper mb-5">
+        <?php 
+        // Câu lệnh SQL
+        $about_q = "SELECT * FROM `team_details`";
+        $about_r = mysqli_query($con, $about_q); // Thực thi truy vấn SQL
+        
+        // Lặp qua từng dòng kết quả
+        while($row = mysqli_fetch_assoc($about_r)){
+            echo <<<data
+            <div class="swiper-slide bg-white text-center overflow-hidden rounded">
+                <img src="images/about/{$row['picture']}" class="w-100">
+                <h5 class="mt-2">{$row['name']}</h5>
+            </div>
+            data;
+        }
+        ?>
     </div>
     <div class="swiper-pagination"></div>
   </div>

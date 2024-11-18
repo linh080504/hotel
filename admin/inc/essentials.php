@@ -1,20 +1,23 @@
 <?php
 define('SITE_URL', 'http://127.0.0.1/csdl/');
 define('ABOUT_IMG_PATH', SITE_URL.'images/about/');
+define('CAROUSEL_IMG_PATH', SITE_URL.'images/carousel/');
 define('UPLOAD_IMAGE_PATH', $_SERVER['DOCUMENT_ROOT'].'/csdl/images/');
 define('ABOUT_FOLDER', 'about');
+define('CAROUSEL_FOLDER', 'carousel/');
 
 
 
     function adminLogin() {
-        session_start();
-        if(!(isset($_SESSION['adminLogin'])&& $_SESSION['adminLogin'] == true)){
-            echo "
-            <script>window.location.href ='index.php';
-            </script>";
-        };
-        session_regenerate_id(true);
+    session_start();
+    if (!(isset($_SESSION['adminLogin']) && $_SESSION['adminLogin'] == true)) {
+        // Sử dụng header() để chuyển hướng
+        header("Location: index.php");
+        exit; // Kết thúc script sau khi chuyển hướng
     }
+    session_regenerate_id(true);
+}
+
     function redirect($url) {
         echo "
         <script>window.location.href ='$url';

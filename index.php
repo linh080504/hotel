@@ -31,24 +31,17 @@
     <!-- Swiper -->
   <div class="swiper Swiper-container">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" class="w-100 d-block">
-        <img src="images/carousel/IMG_15372.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_40905.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_55677.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_62045.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_93127.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_99736.png" />
-      </div>
+      <<?php
+                $res = selectAll('carousel');
+                while($row = mysqli_fetch_assoc($res)) {
+                    $path = CAROUSEL_IMG_PATH;
+                    echo<<<data
+                         <div class="swiper-slide w-100 d-block">
+                            <img src="$path$row[image]" class="w-100 d-block" />
+                        </div>
+                    data;
+                }
+            ?>
     </div>
   </div>
 </div>
@@ -401,38 +394,52 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-md-8 p-4 mb-lg-0 mb-3 bg-white rounded ">
-            <iframe class="w-100 rounded" height="320px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115330.43462063557!2d81.80158454999999!3d25.40226375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398534c9b20bd49f%3A0xa2237856ad4041a!2zQWxsYWhhYmFkLCBVdHRhciBQcmFkZXNoLCDhuqRuIMSQ4buZ!5e0!3m2!1svi!2s!4v1729621422533!5m2!1svi!2s" height="450" loading="lazy"></iframe>
+            <iframe class="w-100 rounded" height="320px" src="<?php echo $contact_r['iframe']?>" height="450" loading="lazy"></iframe>
         </div>
         <div class="col-lg-4 col-md-4">
-            <div class="bg-white p-4 rounded mb-4">
-                <h5>Call us</h5>
-                <a href="tell: +84123123123" class="d-inline-block mb-2 text-decoration-none text-dark ">
-                    <i class="bi bi-telephone-fill"></i>+84123123123
-                </a>
-                <br>
-                <a href="tell: +84123123123" class="d-inline-block mb-2 text-decoration-none text-dark ">
-                    <i class="bi bi-telephone-fill"></i>+84123123123
-                </a>
-            </div>
+        <div class="bg-white p-4 rounded mb-4">
+    <h5>Call us</h5>
+    <!-- Hiển thị số điện thoại đầu tiên -->
+    <a href="tel:+<?php echo $contact_r['pn1']; ?>" class="d-inline-block mb-2 text-decoration-none text-dark">
+        <i class="bi bi-telephone-fill"></i><?php echo $contact_r['pn1']; ?>
+    </a>
+    <br>
+    <!-- Kiểm tra và hiển thị số điện thoại thứ hai nếu tồn tại -->
+    <?php if (!empty($contact_r['pn2'])): ?>
+        <a href="tel:+<?php echo $contact_r['pn2']; ?>" class="d-inline-block mb-2 text-decoration-none text-dark">
+            <i class="bi bi-telephone-fill"></i><?php echo $contact_r['pn2']; ?>
+        </a>
+    <?php endif; ?>
+</div>
+
             <div class="bg-white p-4 rounded mb-4">
                 <h5>Follow us</h5>
-                <a href="#" class="d-inline-block mb-3">
-                    <span class="badge bg-light text-dark fs-6 p-2">
-                        <i class="bi bi-twitter me-1"></i>Twitter
-                    </span>
-                </a>
+                <?php if (!empty($contact_r['tw'])): ?>
+                    <a href="<?php echo $contact_r['tw']; ?>" class="d-inline-block mb-3">
+                        <span class="badge bg-light text-dark fs-6 p-2">
+                            <i class="bi bi-twitter me-1"></i>Twitter
+                        </span>
+                    </a>
+                <?php endif; ?>
+                
                 <br>
-                <a href="#" class="d-inline-block mb-3">
-                    <span class="badge bg-light text-dark fs-6 p-2">
-                        <i class="bi bi-facebook me-1"></i>Facebook
-                    </span>
-                </a>
+                <?php if (!empty($contact_r['fb'])): ?>
+                    <a href="<?php echo $contact_r['fb']; ?>" class="d-inline-block mb-3">
+                        <span class="badge bg-light text-dark fs-6 p-2">
+                            <i class="bi bi-facebook me-1"></i>Facebook
+                        </span>
+                    </a>
+                <?php endif; ?>
+                
                 <br>
-                <a href="#" class="d-inline-block mb-3">
-                    <span class="badge bg-light text-dark fs-6 p-2">
-                        <i class="bi bi-instagram me-1"></i>Instagram
-                    </span>
-                </a>
+                <?php if (!empty($contact_r['insta'])): ?>
+                    <a href="<?php echo $contact_r['insta']; ?>" class="d-inline-block mb-3">
+                        <span class="badge bg-light text-dark fs-6 p-2">
+                            <i class="bi bi-instagram me-1"></i>Instagram
+                        </span>
+                    </a>
+                <?php endif; ?>
+                
             </div>
         </div>
     </div>

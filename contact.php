@@ -24,35 +24,44 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 mb-5 px-4">
             <div class="bg-white rounded shadow p-4">
-                <iframe class="w-100 rounded mb-4" height="320px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115330.43462063557!2d81.80158454999999!3d25.40226375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398534c9b20bd49f%3A0xa2237856ad4041a!2zQWxsYWhhYmFkLCBVdHRhciBQcmFkZXNoLCDhuqRuIMSQ4buZ!5e0!3m2!1svi!2s!4v1729621422533!5m2!1svi!2s" height="450" loading="lazy"></iframe>
+                <iframe class="w-100 rounded mb-4" height="320px" src="<?php echo $contact_r['iframe']?>" height="450" loading="lazy"></iframe>
                 <h5>Address</h5>
-                <a href="https://maps.app.goo.gl/vWYRwtBmPNUFCUH3A" target="_blank" class="d-inline-block text-decoration-none text-dark mb-2">
-                    <i class="bi bi-geo-alt-fill"></i> XYZ, Prayaraj, Uttar Pradesh
+                <a href="<?php echo $contact_r['address']; ?>" target="_blank" class="d-inline-block text-decoration-none text-dark mb-2">
+                    <i class="bi bi-geo-alt-fill"></i> <?php echo $contact_r['address']; ?>
                 </a>
                 <h5 class="mt-4">Call us</h5>
-                <a href="tell: +84123123123" class="d-inline-block mb-2 text-decoration-none text-dark ">
-                    <i class="bi bi-telephone-fill"></i>+84123123123
+                <a href="tell: +<?php echo $contact_r['pn1']; ?>" class="d-inline-block mb-2 text-decoration-none text-dark ">
+                    <i class="bi bi-telephone-fill"></i><?php echo $contact_r['pn1']; ?>
                 </a>
                 <br>
-                <a href="tell: +84123123123" class="d-inline-block mb-2 text-decoration-none text-dark ">
-                    <i class="bi bi-telephone-fill"></i>+84123123123
-                </a>
+                <?php if (!empty($contact_r['pn2'])): ?>
+                    <a href="tel:+<?php echo $contact_r['pn2']; ?>" class="d-inline-block mb-2 text-decoration-none text-dark">
+                        <i class="bi bi-telephone-fill"></i><?php echo $contact_r['pn2']; ?>
+                    </a>
+                <?php endif; ?>
                 <h5 class="mt-4">Email</h5>
-                <a href="mailto: ask.tjweb@gmial.com" class="d-inline-block mb-2 text-decoration-none text-dark">
-                    <i class="bi bi-envelope"></i> ask.tjweb@gmail.com
+                <a href="<?php echo $contact_r['email']; ?>" class="d-inline-block mb-2 text-decoration-none text-dark">
+                    <i class="bi bi-envelope"></i> <?php echo $contact_r['email']; ?>
                 </a>
                 <h5 class="mt-4">Follow us</h5>
-                <a href="#" class="d-inline-block mb-3 text-dark fs-5 me-2">
+                <?php if (!empty($contact_r['tw'])): ?>
+                    <a href="<?php echo $contact_r['tw']; ?>" class="d-inline-block mb-3 text-dark fs-5 me-2">
                       <i class="bi bi-twitter me-1"></i>
                 </a>
+                <?php endif; ?>
+
+                <?php if (!empty($contact_r['fb'])): ?>
+                    <a href="<?php echo $contact_r['fb']; ?>" class="d-inline-block mb-3 text-dark fs-5 me-2">
+                        <i class="bi bi-facebook me-1"></i>
+                    </a>
+                <?php endif; ?>
                 
-                <a href="#" class="d-inline-block mb-3 text-dark fs-5 me-2">
-                    <i class="bi bi-facebook me-1"></i>
-                </a>
-        
-                <a href="#" class="d-inline-block mb-3 text-dark fs-5 me-2">
+                <?php if (!empty($contact_r['insta'])): ?>
+                    <a href="<?php echo $contact_r['insta']; ?>" class="d-inline-block mb-3 text-dark fs-5 me-2">
                    <i class="bi bi-instagram me-1"></i>
                 </a>
+                <?php endif; ?>
+                    
             </div>
         </div>
         <div class="col-lg-6 col-md-6 mb-5 px-4">

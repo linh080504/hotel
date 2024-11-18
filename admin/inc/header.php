@@ -1,3 +1,7 @@
+<?php
+    $current_page = basename($_SERVER['PHP_SELF']); // Lấy tên file hiện tại
+?>
+
 <div class = "container-fluid bg-dark text-light p-3 d-flex align-item-center justify-content-between sticky-top">
         <h3 class = "mb-0 h-font">HB-WEBSITE</h3>
         <a href ="logout.php"class ="btn btn-light btn-sm">Log out</a>

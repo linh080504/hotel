@@ -196,16 +196,16 @@ function add_member() {
 
         switch (this.responseText.trim()) {
             case 'inv_img':
-                alert('Only JPG, PNG, and WebP formats are allowed.');
+                arlert('Only JPG, PNG, and WebP formats are allowed.');
                 break;
             case 'inv_size':
-                alert('Image must be smaller than 2MB.');
+                arlert('Image must be smaller than 2MB.');
                 break;
             case 'upd_failed':
-                alert('Image upload failed. Server issue.');
+                arlert('Image upload failed. Server issue.');
                 break;
             case '1':
-                alert('New member added successfully!');
+                arlert('New member added successfully!');
                 member_name_inp.value = ''; // Xóa giá trị input
                 member_picture_inp.value = '';
                 get_member(); // Refresh danh sách thành viên

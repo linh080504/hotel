@@ -172,7 +172,7 @@ session_regenerate_id(true);
                                                     <label class="form-label fw-bold">Phone Numbers (with country code)</label>
                                                     <div class="input-group mb-3">
                                                         <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
-                                                        <input type="text" name="pn2" id="pn2_inp" class="form-control shadow-none" required>
+                                                        <input type="text" name="pn2" id="pn2_inp" class="form-control shadow-none">
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
@@ -243,7 +243,7 @@ session_regenerate_id(true);
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label fw-bold">Picture</label>
-                                            <input type="file" name="member_picture" id="member_picture_inp" accept="[.jpg, .png, .webp, .jpeg]" class="form-control shadow-none" required>
+                                            <input type="file" name="member_picture" id="member_picture_inp" accept=".jpg, .jpeg, .png, .webp" class="form-control shadow-none" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -255,7 +255,6 @@ session_regenerate_id(true);
                         </div>
                     </div>
 
-                    <?php echo $_SERVER['DOCUMENT_ROOT']?>
 
                     </div>
                 </div>

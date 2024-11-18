@@ -22,23 +22,26 @@
         return $data;
     }
 
-    function select($sql, $value, $datatypes){
+    function select($sql, $value = [], $datatypes = '') {
         $con = $GLOBALS['con'];
-        if($stmt = mysqli_prepare($con, $sql)){
-            mysqli_stmt_bind_param($stmt, $datatypes,...$value);
-            if(mysqli_stmt_execute($stmt)){
+        if ($stmt = mysqli_prepare($con, $sql)) {
+            // Chỉ bind param nếu có dữ liệu
+            if (!empty($value) && !empty($datatypes)) {
+                mysqli_stmt_bind_param($stmt, $datatypes, ...$value);
+            }
+    
+            if (mysqli_stmt_execute($stmt)) {
                 $res = mysqli_stmt_get_result($stmt);
                 return $res;
-            }else{
+            } else {
                 mysqli_stmt_close($stmt);
                 die("Query cannot executed - Select");
             }
-            
-        }else{
+        } else {
             die("Query cannot prepared - Select");
         }
     }
-
+    
     function update($sql, $value, $datatypes){
         $con = $GLOBALS['con'];
         if($stmt = mysqli_prepare($con, $sql)){
