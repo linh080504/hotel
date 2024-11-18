@@ -44,25 +44,36 @@
     }
 
     if (isset($_POST['action']) && $_POST['action'] == 'add_member') {
-        $frm_data = filteration($_POST);
-        $img_r = uploadImage($_FILES['picture'], ABOUT_FOLDER);
-
-        if($img_r == 'inv_img'){
-            echo $img_r;
-        }
-        else if($img_r == 'inv_size'){
-            echo $img_r;
-        }
-        else if($img_r == 'upd_failed'){
-            echo $img_r;
-        }
-        else{
-            $q = "INSERT INTO `team_details`(`name`, `picture`) VALUES (?,?)";
+        $frm_data = filteration($_POST); // Lọc dữ liệu
+        $img_r = uploadImage($_FILES['picture'], ABOUT_FOLDER); // Hàm upload ảnh
+    
+        if ($img_r == 'inv_img') {
+            echo 'inv_img'; // Định dạng file không hợp lệ
+            exit;
+        } elseif ($img_r == 'inv_size') {
+            echo 'inv_size'; // File quá lớn
+            exit;
+        } elseif ($img_r == 'upd_failed') {
+            echo 'upd_failed'; // Lỗi upload
+            exit;
+        } else {
+            // Chuẩn bị câu lệnh INSERT
+            $q = "INSERT INTO `team_details`(`name`, `picture`) VALUES (?, ?)";
             $values = [$frm_data['name'], $img_r];
-            $res = insert($q, $values, 'ss');
-            echo $res;
+            $res = insert($q, $values, 'ss'); // Hàm insert sử dụng prepared statements
+    
+            // Kiểm tra kết quả truy vấn
+            if ($res) {
+                echo '1'; // Thành công
+            } else {
+                echo 'Query cannot executed - Insert'; // Lỗi khi thực thi
+            }
+            exit;
         }
     }
+    
+    
+
     if(isset($_POST['get_member'])) {
         $res = selectAll('team-details');
         while($row = mysqli_fetch_assoc($res)) 
@@ -83,18 +94,20 @@
             data;
         }
     }
-    if(isset($_POST['rem_member'])) {
+    if (isset($_POST['action']) && $_POST['action'] == 'rem_member') {
         $rm_data = filteration($_POST);
         $values = [$rm_data['rem_member']];
-        $pre_q = "SELECT * FROM 'team_details' WHERE 'sr_no = ?'";
-        $res = select($pre_q, $value, 'i');
+        $pre_q = "SELECT * FROM `team_details` WHERE `sr_no` = ?";
+        $res = select($pre_q, $values, 'i');
         $img = mysqli_fetch_assoc($res);
-        if(deleteImage($img['picture'], ABOUT_FOLDER)){
-            $q = "DELETE * FROM 'team_details' WHERE 'sr_no = ?'";
-            $res = delete($q, $value, 'i');
+    
+        if (deleteImage($img['picture'], ABOUT_FOLDER)) {
+            $q = "DELETE FROM `team_details` WHERE `sr_no` = ?";
+            $res = delete($q, $values, 'i');
             echo $res;
         } else {
             echo 0;
         }
     }
+    
 ?>

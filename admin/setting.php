@@ -227,7 +227,7 @@ session_regenerate_id(true);
                             
                         </div>
 
-                <!-- Dream Team modal -->
+                <!-- Manager Team modal -->
                     <div class="modal fade" id="team-s" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form id="team_s_form">

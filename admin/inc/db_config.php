@@ -2,7 +2,7 @@
 
     $hname = 'localhost';
     $uname = 'root';
-    $pass = '';
+    $pass = '1234567890';
     $db = 'hotel';
 
     $con= mysqli_connect($hname, $uname, $pass, $db);
@@ -55,15 +55,17 @@
             die("Query cannot prepared - Update");
         }
     }
+
     function selectAll($table) {
         $con = $GLOBALS['con'];
         $res = mysqli_query($con,"SELECT * FROM $table");
         return $res; 
     }
-    function insert($sql, $values, $datatypes) {
+    
+    function insert($sql, $value, $datatypes){
         $con = $GLOBALS['con'];
         if($stmt = mysqli_prepare($con, $sql)){
-            mysqli_stmt_bind_param($stmt, $datatypes,...$values);
+            mysqli_stmt_bind_param($stmt, $datatypes,...$value);
             if(mysqli_stmt_execute($stmt)){
                 $res =mysqli_stmt_affected_rows($stmt);
                 return $res;
@@ -76,6 +78,7 @@
             die("Query cannot prepared - Insert");
         }
     }
+
     function delete($sql, $value, $datatypes){
         $con = $GLOBALS['con'];
         if($stmt = mysqli_prepare($con, $sql)){

@@ -166,59 +166,75 @@ team_s_form.addEventListener('submit', function(e){
     add_member();
 })
 function get_member() {
-    let site_title = document.getElementById('site_title');
-    let site_about =document.getElementById('site_about');
-    let shutdown_toggle =document.getElementById('shutdown_toggle');
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-        document.getElementById('team-data').innerHTML = this.responseText;
-    }
-    xhr.send('get_general');
+
+    xhr.onload = function () {
+        if (this.status == 200) {
+            document.getElementById('team-data').innerHTML = this.responseText;
+        } else {
+            alert('error', 'Failed to load team data!');
+        }
+    };
+    xhr.send('action=get_member');
 }
-function add_member(){
+
+function add_member() {
     let data = new FormData();
-    data.append('name', member_name_inp.value);
-    data.append('picture', member_picture_inp.files[0]);
-    data.append('add_member', ' ' );
+    data.append('action', 'add_member'); // Đảm bảo action đúng
+    data.append('name', member_name_inp.value); // Tên thành viên
+    data.append('picture', member_picture_inp.files[0]); // File ảnh
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "ajax/settings_crud.php", true);
 
-    xhr.onload = function() {
-        var myModal =  document.getElementById('team-s')
-        let modal = bootstrap.Modal.getInstance(document.getElementById(myModal));
+    xhr.onload = function () {
+        let myModal = document.getElementById('team-s');
+        let modal = bootstrap.Modal.getInstance(myModal);
         modal.hide();
-        if(this.responseText == 'inv_img') {
-            alert('error', 'Only JPG and PNG are allowed')
-        }else if (this.responseText == 'inv_size') {
-            alert('error', 'Img less than 2mb')
-        }else if (this.responseText == 'upd_failed') {
-            alert('error', 'Img down failed. Server down')
-        } else {
-            alert('success', 'New member added! ');
-            member_name_inp.value= '';
-            member_picture_inp.value= '';
-            get_member();
+
+        switch (this.responseText.trim()) {
+            case 'inv_img':
+                alert('Only JPG, PNG, and WebP formats are allowed.');
+                break;
+            case 'inv_size':
+                alert('Image must be smaller than 2MB.');
+                break;
+            case 'upd_failed':
+                alert('Image upload failed. Server issue.');
+                break;
+            case '1':
+                alert('New member added successfully!');
+                member_name_inp.value = ''; // Xóa giá trị input
+                member_picture_inp.value = '';
+                get_member(); // Refresh danh sách thành viên
+                break;
+            default:
+                alert('Unexpected error: ' + this.responseText);
+                break;
         }
-    }
+    };
     xhr.send(data);
 }
+
+
 function rem_member(val) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-        if(this.responseText == 1) {
-            alert('success', 'Member removed!');
-            get_member();
-        } else { 
-            alert('error', 'Server down')
+
+    xhr.onload = function () {
+        if (this.responseText == "1") { // So sánh chuỗi "1"
+            arlert('success', 'Member removed!');
+            get_member(); // Refresh team list
+        } else {
+            arlert('error', 'Failed to remove member. Server issue.');
         }
-    }
-    xhr.send('rem_member'+val); 
+    };
+    xhr.send('action=rem_member&rem_member=' + val);
 }
+
 window.onload = function() {
     loadGeneralData(); // Initial data load
     get_contacts();

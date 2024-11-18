@@ -2,7 +2,8 @@
 define('SITE_URL', 'http://127.0.0.1/csdl/');
 define('ABOUT_IMG_PATH', SITE_URL.'images/about/');
 define('UPLOAD_IMAGE_PATH', $_SERVER['DOCUMENT_ROOT'].'/csdl/images/');
-define('ABOUT_FOLDER', 'about/');
+define('ABOUT_FOLDER', 'about');
+
 
 
     function adminLogin() {
@@ -29,29 +30,46 @@ define('ABOUT_FOLDER', 'about/');
          alert;
     }
 
-    function uploadImage($image, $folder){
-        $valid_mime  = ['image/jpeg', 'image/png', 'image/webp'];
-        $img_mime = $image['type'];
-        if(!in_array($img_mime, $valid_mime)) {
-            return 'inv_img';
-        } else if(($image['size']/(1024 * 1024)) > 2) {
-            return 'inv_size';
-        }else {
-            $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
-            $rname = 'IMG'.random_int(11111,99999).".$ext";
-            $img_path = UPLOAD_IMAGE_PATH.$folder.$rname;
-            if(move_uploaded_file($image['tmp_name'], $img_path)) {
-                return $rname;
-            } else {
-                return 'upd_failed';
-            }
+    function uploadImage($file, $folder) {
+        $valid_extensions = ['jpg', 'jpeg', 'png', 'webp'];
+        $max_size = 2 * 1024 * 1024; // Giới hạn 2MB
+    
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if (!in_array(strtolower($ext), $valid_extensions)) {
+            return 'inv_img'; // Không đúng định dạng
+        }
+        if ($file['size'] > $max_size) {
+            return 'inv_size'; // File quá lớn
+        }
+    
+        $file_name = time() . '_' . $file['name']; // Đặt tên file
+        $full_folder_path = UPLOAD_IMAGE_PATH . $folder; // Đường dẫn đầy đủ đến thư mục đích
+    
+        // Tạo thư mục nếu chưa tồn tại
+        if (!is_dir($full_folder_path)) {
+            mkdir($full_folder_path, 0777, true);
+        }
+    
+        $path = $full_folder_path . '/' . $file_name;
+    
+        if (move_uploaded_file($file['tmp_name'], $path)) {
+            return $file_name; // Thành công
+        } else {
+            return 'upd_failed'; // Lỗi upload
         }
     }
+    
+    
+
     function deleteImage($image, $folder) {
-        if(unlink(UPLOAD_IMAGE_PATH.$folder.$image)) {
-            return true;
-    } else {
-        return false;
+        $full_path = UPLOAD_IMAGE_PATH . $folder . '/' . $image;
+    
+        if (file_exists($full_path)) {
+            return unlink($full_path);
+        } else {
+            return false; // File không tồn tại
+        }
     }
-}
+    
+
 ?>
