@@ -74,26 +74,26 @@
     
     
 
-    if(isset($_POST['get_member'])) {
-        $res = selectAll('team-details');
-        while($row = mysqli_fetch_assoc($res)) 
-        {
+    if (isset($_POST['action']) && $_POST['action'] == 'get_member') {
+        $res = selectAll('team_details'); // Tên bảng phải khớp với trong database
+        while ($row = mysqli_fetch_assoc($res)) {
             $path = ABOUT_IMG_PATH;
-            echo<<<data
-                <div class="div-col-md-2 mb-3">
-                                <div class="card" style="width: 18rem;">
-                                    <img src="$path$row[picture]" class="card-img-top">
-                                    <div class="card-body">
-                                        <button type ="button" onClick ="rem_member()" class="btn btn-danger btn-sm shadow-none">
-                                            <i class="bi bi-trash"></i>Delete
-                                        </button>
-                                </div>
-                                <p class="card-text text-center px-3 py-2">$row[name]</p>
-                                </div>
-                            </div>
+            echo <<<data
+                <div class="col-md-3 mb-3">
+                    <div class="card" style="width: 18rem;">
+                        <img src="$path$row[picture]" class="card-img-top">
+                        <div class="card-body text-center">
+                            <p class="card-text">$row[name]</p>
+                            <button type="button" class="btn btn-danger btn-sm shadow-none" onClick="rem_member($row[sr_no])">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
             data;
         }
     }
+    
     if (isset($_POST['action']) && $_POST['action'] == 'rem_member') {
         $rm_data = filteration($_POST);
         $values = [$rm_data['rem_member']];

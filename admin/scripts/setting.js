@@ -169,16 +169,16 @@ function get_member() {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
     xhr.onload = function () {
         if (this.status == 200) {
             document.getElementById('team-data').innerHTML = this.responseText;
         } else {
-            alert('error', 'Failed to load team data!');
+            alert('Error: Failed to load team data!');
         }
     };
     xhr.send('action=get_member');
 }
+
 
 function add_member() {
     let data = new FormData();
