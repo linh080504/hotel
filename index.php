@@ -26,31 +26,24 @@
 
 <?php require('inc/header.php');?>
 
-<!-- Caroulse -->
+<!-- Carousel -->
 <div class="container-fluid px-lg-4 mt-4">
     <!-- Swiper -->
-  <div class="swiper Swiper-container">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide" class="w-100 d-block">
-        <img src="images/carousel/IMG_15372.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_40905.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_55677.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_62045.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_93127.png" />
-      </div>
-      <div class="swiper-slide">
-        <img src="images/carousel/IMG_99736.png" />
-      </div>
+    <div class="swiper-container"> <!-- Cập nhật class để đúng với cấu trúc Swiper -->
+        <div class="swiper-wrapper">
+            <?php
+                $res = selectAll('carousel');
+                while($row = mysqli_fetch_assoc($res)) {
+                    $path = CAROUSEL_IMG_PATH;
+                    echo<<<data
+                         <div class="swiper-slide w-100 d-block">
+                            <img src="$path$row[image]" class="w-100 d-block" />
+                        </div>
+                    data;
+                }
+            ?>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- check availability form -->

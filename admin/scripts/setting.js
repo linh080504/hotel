@@ -177,34 +177,70 @@ function get_member() {
     }
     xhr.send('get_general');
 }
-function add_member(){
+// function add_member(){
+//     let data = new FormData();
+//     data.append('name', member_name_inp.value);
+//     data.append('picture', member_picture_inp.files[0]);
+//     data.append('add_member', ' ' );
+
+//     let xhr = new XMLHttpRequest();
+//     xhr.open("POST", "ajax/settings_crud.php", true);
+
+//     xhr.onload = function() {
+//         var myModal =  document.getElementById('team-s')
+//         let modal = bootstrap.Modal.getInstance(document.getElementById(myModal));
+//         modal.hide();
+//         if(this.responseText == 'inv_img') {
+//             alert('error', 'Only JPG and PNG are allowed')
+//         }else if (this.responseText == 'inv_size') {
+//             alert('error', 'Img less than 2mb')
+//         }else if (this.responseText == 'upd_failed') {
+//             alert('error', 'Img down failed. Server down')
+//         } else {
+//             alert('success', 'New member added! ');
+//             member_name_inp.value= '';
+//             member_picture_inp.value= '';
+//             get_member();
+//         }
+//     }
+//     xhr.send(data);
+// }
+function add_member() {
     let data = new FormData();
     data.append('name', member_name_inp.value);
     data.append('picture', member_picture_inp.files[0]);
-    data.append('add_member', ' ' );
+    data.append('add_member', ' ');
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "ajax/settings_crud.php", true);
 
-    xhr.onload = function() {
-        var myModal =  document.getElementById('team-s')
-        let modal = bootstrap.Modal.getInstance(document.getElementById(myModal));
-        modal.hide();
-        if(this.responseText == 'inv_img') {
-            alert('error', 'Only JPG and PNG are allowed')
-        }else if (this.responseText == 'inv_size') {
-            alert('error', 'Img less than 2mb')
-        }else if (this.responseText == 'upd_failed') {
-            alert('error', 'Img down failed. Server down')
+    xhr.onload = function () {
+        // Kiểm tra nếu phần tử modal tồn tại
+        var myModal = document.getElementById('team-s');
+        if (myModal) {
+            let modal = bootstrap.Modal.getInstance(myModal); // Khởi tạo modal từ phần tử DOM
+            modal.hide();  // Ẩn modal nếu tồn tại
         } else {
-            alert('success', 'New member added! ');
-            member_name_inp.value= '';
-            member_picture_inp.value= '';
+            console.error('Modal not found!');
+        }
+
+        if (this.responseText == 'inv_img') {
+            alert('error', 'Only JPG and PNG are allowed');
+        } else if (this.responseText == 'inv_size') {
+            alert('error', 'Img less than 2mb');
+        } else if (this.responseText == 'upd_failed') {
+            alert('error', 'Img down failed. Server down');
+        } else {
+            alert('success', 'New member added!');
+            member_name_inp.value = '';
+            member_picture_inp.value = '';
             get_member();
         }
     }
+
     xhr.send(data);
 }
+
 function rem_member(val) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "ajax/settings_crud.php", true);

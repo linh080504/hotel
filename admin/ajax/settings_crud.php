@@ -69,11 +69,11 @@
         {
             $path = ABOUT_IMG_PATH;
             echo<<<data
-                <div class="div-col-md-2 mb-3">
+                <div class="col-md-2 mb-3">
                                 <div class="card" style="width: 18rem;">
                                     <img src="$path$row[picture]" class="card-img-top">
                                     <div class="card-body">
-                                        <button type ="button" onClick ="rem_member()" class="btn btn-danger btn-sm shadow-none">
+                                        <button type ="button" onClick ="rem_member($row[sr_no])" class="btn btn-danger btn-sm shadow-none">
                                             <i class="bi bi-trash"></i>Delete
                                         </button>
                                 </div>
