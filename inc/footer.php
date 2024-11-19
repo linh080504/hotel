@@ -3,10 +3,9 @@
         <div class="col-lg-4 p-4">
             <h3 class="h-font fw-bold fs-3 ">TJ HOTEL</h3>
             <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-                Eveniet consectetur consequatur quam commodi tempore vitae 
-                animi obcaecati quos odit eos ducimus, debitis porro voluptates 
-                nam fugiat quisquam eius quas eaque?
+                We always value the contact from our customers and partners. 
+                If you have any questions, support requests, or comments, please do not hesitate to contact us. 
+                Our team will respond to you as soon as possible to resolve any queries quickly and effectively.
             </p>
         </div>
         <div class="col-lg-4 p-4">
