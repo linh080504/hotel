@@ -68,11 +68,12 @@ define('CAROUSEL_FOLDER', 'carousel/');
         $full_path = UPLOAD_IMAGE_PATH . $folder . '/' . $image;
     
         if (file_exists($full_path)) {
-            return unlink($full_path);
+            return unlink($full_path);  // Xóa tệp nếu tồn tại
         } else {
-            return false; // File không tồn tại
+            return false;  // Trả về false nếu không tìm thấy tệp
         }
     }
+    
     
 
 ?>

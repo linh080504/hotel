@@ -120,8 +120,9 @@
             xhr.onload = function() {
                 document.getElementById('carousel-data').innerHTML = this.responseText;
             }
-            xhr.send('get_carousel');
+            xhr.send('action=get_carousel');
         }
+        
         
         // Thêm ảnh vào carousel
         function add_image() {
@@ -167,6 +168,7 @@
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "ajax/carousel_crud.php", true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
             xhr.onload = function() {
                 if (this.responseText == '1') {
                     alert('success', 'Image removed successfully!');
@@ -175,8 +177,12 @@
                     alert('error', 'Server error');
                 }
             }
-            xhr.send('rem_image=' + val);  // Gửi ID ảnh cần xóa
+            
+            // Gửi ID ảnh cần xóa và action là 'rem_image'
+            xhr.send('action=rem_image&rem_image=' + val);
         }
+        
+        
         
         // Khi trang tải xong, gọi hàm get_carousel để tải danh sách ảnh
         window.onload = function() {

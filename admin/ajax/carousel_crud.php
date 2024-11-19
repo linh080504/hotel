@@ -27,25 +27,25 @@
         }
     }
     // Lấy các hình ảnh từ carousel
-if(isset($_POST['get_carousel'])) {
-    $res = selectAll('carousel');
-    while($row = mysqli_fetch_assoc($res)) {
-        $path = CAROUSEL_IMG_PATH;
-        echo <<<data
-            <div class="col-md-4 mb-3">
-                <div class="card" style="width: 18rem;">
-                    <img src="$path$row[image]" class="card-img-top">
-                    <div class="card-body">
-                        <button type="button" onClick="rem_image($row[sr_no])" class="btn btn-danger btn-sm shadow-none">
-                            <i class="bi bi-trash"></i>Delete
-                        </button>
+    if(isset($_POST['action']) && $_POST['action'] == 'get_carousel') {
+        $res = selectAll('carousel');
+        while($row = mysqli_fetch_assoc($res)) {
+            $path = CAROUSEL_IMG_PATH;
+            echo <<<data
+                <div class="col-md-4 mb-3">
+                    <div class="card" style="width: 18rem;">
+                        <img src="$path$row[image]" class="card-img-top">
+                        <div class="card-body">
+                            <button type="button" onClick="rem_image($row[sr_no])" class="btn btn-danger btn-sm shadow-none">
+                                <i class="bi bi-trash"></i>Delete
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        data;
+            data;
+        }
     }
-}
-
+    
     // Xóa hình ảnh trong carousel
     if(isset($_POST['action']) && $_POST['action'] == 'rem_image') {
         $rm_data = filteration($_POST);
