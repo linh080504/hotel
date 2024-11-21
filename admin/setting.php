@@ -134,9 +134,6 @@ session_regenerate_id(true);
                                 </div>
                             </div>
                         </div>
-                        
-                        <h6 class="card-subtitle mb-1 fw-bold">About Us</h6>
-                        <p class="card-text" id="site_about"></p>
                     </div>
                 </div>
 
