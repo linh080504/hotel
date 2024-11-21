@@ -55,7 +55,7 @@
             exit;
         } else {
             // Chuẩn bị câu lệnh INSERT
-            $q = "INSERT INTO `facilities`(`icon`, `name`, `desciption`) VALUES (?, ?, ?)";
+            $q = "INSERT INTO `facilities`(`icon`, `name`, `description`) VALUES (?, ?, ?)";
             $values = [$img_r, $frm_data['name'], $frm_data['desc']];
             $res = insert($q, $values, 'sss'); // Hàm insert sử dụng prepared statements
     

@@ -78,19 +78,23 @@ define('FACILITIES_FOLDER', 'facilities/');
     }
 
     function uploadSVGImage($file, $folder) {
-        $valid_extensions = ['image/svg+xml'];
+        $valid_mime_type = 'image/svg+xml';
         $max_size = 1 * 1024 * 1024; // Giới hạn 1MB
     
-        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        if (!in_array(strtolower($ext), $valid_extensions)) {
+        // Kiểm tra MIME Type
+        $mime = mime_content_type($file['tmp_name']);
+        if ($mime !== $valid_mime_type) {
             return 'inv_img'; // Không đúng định dạng
         }
+    
+        // Kiểm tra kích thước file
         if ($file['size'] > $max_size) {
             return 'inv_size'; // File quá lớn
         }
     
-        $file_name = time() . '_' . $file['name']; // Đặt tên file
-        $full_folder_path = UPLOAD_IMAGE_PATH . $folder; // Đường dẫn đầy đủ đến thư mục đích
+        // Tạo tên file và thư mục đích
+        $file_name = time() . '_' . basename($file['name']);
+        $full_folder_path = UPLOAD_IMAGE_PATH . $folder;
     
         // Tạo thư mục nếu chưa tồn tại
         if (!is_dir($full_folder_path)) {
@@ -99,12 +103,14 @@ define('FACILITIES_FOLDER', 'facilities/');
     
         $path = $full_folder_path . '/' . $file_name;
     
+        // Di chuyển file
         if (move_uploaded_file($file['tmp_name'], $path)) {
             return $file_name; // Thành công
         } else {
             return 'upd_failed'; // Lỗi upload
         }
     }
+    
     
 
 ?>

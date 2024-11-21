@@ -121,7 +121,7 @@ adminLogin();
                             </div>                       
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea name="facility-desc" class="form-control shadow-none" rows="3"></textarea>
+                                <textarea name="facility_desc" class="form-control shadow-none" rows="3"></textarea>
                             </div>
 
                         </div>
@@ -152,7 +152,7 @@ adminLogin();
     data.append('name', feature_s_form.elements['feature_name'].value);
     data.append('action', 'add_feature');
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/feature_facilities.php", true);
+    xhr.open("POST", "ajax/features_facilities.php", true);
 
     xhr.onload = function () {
         let myModal = document.getElementById('feature-s');
@@ -161,17 +161,17 @@ adminLogin();
 
         if(this.responseText==1)
     {
-        alert('success','New feature added');
+        arlert('success','New feature added');
         feature_s_form.elements['feature_name'].value='';
         get_feature();
     }
     else {
-        alert('Error','Sever Down!');
+        arlert('Error','Sever Down!');
     }
         
     };
     xhr.send(data);
-}
+    }
 
     function get_feature() {
         let xhr = new XMLHttpRequest();
@@ -206,47 +206,50 @@ adminLogin();
         }
     };
     xhr.send('action=rem_feature&rem_feature=' + val);
-}
+    }
 
-    facility_s_form.addEventListener('submit', function(e){
-                e.preventDefault();
-                add_facility();
-        });
+    facility_s_form.addEventListener('submit', function (e) {
+    e.preventDefault(); // Chặn hành động mặc định
+    add_facility();
+    });
+
     
     function add_facility() {
-
         let data = new FormData();
         data.append('name', facility_s_form.elements['facility_name'].value);
         data.append('icon', facility_s_form.elements['facility_icon'].files[0]);
         data.append('desc', facility_s_form.elements['facility_desc'].value);
         data.append('action', 'add_facility');
 
+        console.log([...data]); // Hiển thị dữ liệu gửi đi
+
         let xhr = new XMLHttpRequest();
         xhr.open("POST", "ajax/features_facilities.php", true);
 
         xhr.onload = function () {
+
             let myModal = document.getElementById('facility-s');
             let modal = bootstrap.Modal.getInstance(myModal);
             modal.hide();
 
-            if(this.responseText == 'inv_img'){
-            alert('error', 'Only SVG images are allowed!');
-            }
-            else if(this.responseText == 'inv_size'){
-            alert('error', 'Image should be less than 1MB!');
-            }
-            else if(this.responseText == 'upd_failed'){
-            alert('error', 'Image upload failed. Server Down!');
-            }
-            else{
-                alert('success', 'New facility added!');
+            if (this.responseText === 'inv_img') {
+                alert('Only SVG images are allowed!');
+            } else if (this.responseText === 'inv_size') {
+                alert('Image should be less than 1MB!');
+            } else if (this.responseText === 'upd_failed') {
+                alert('Image upload failed. Server Down!');
+            } else if (this.responseText === '1') {
+                alert('New facility added!');
                 facility_s_form.reset();
                 get_facilities();
-                }
+            } else {
+                alert('Unknown error: ' + this.responseText);
             }
+        };
 
-            xhr.send(data);
+        xhr.send(data);
     }
+
 
     function get_facilities() {
     let xhr = new XMLHttpRequest();
@@ -281,7 +284,7 @@ adminLogin();
         }
     };
     xhr.send('action=rem_facility&rem_facility=' + val);
-}
+    }
     
     window.onload = function(){
         get_feature();
