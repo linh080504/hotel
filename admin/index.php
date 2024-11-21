@@ -58,7 +58,7 @@
             $_SESSION['adminId'] = $row['sr_no'];
             redirect('dashboard.php');
         }else{
-            arlert('error', 'Login failed - Invalid Credentials!'); // Thêm dấu chấm phẩy
+            alert('error', 'Login failed - Invalid Credentials!'); // Thêm dấu chấm phẩy
         }
     }
 ?>

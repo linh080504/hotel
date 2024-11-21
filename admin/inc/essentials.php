@@ -23,7 +23,7 @@ define('CAROUSEL_FOLDER', 'carousel/');
         <script>window.location.href ='$url';
         </script>";
     }
-    function arlert($type, $msg){
+    function alert($type, $msg){
         $bs_class = ($type == "succeed")? "alert-succeed" : "alert-danger";
         echo <<<alert
                 <div class="alert $bs_class alert-warning alert-dismissible fade show custom-alert" role="alert">
@@ -68,12 +68,11 @@ define('CAROUSEL_FOLDER', 'carousel/');
         $full_path = UPLOAD_IMAGE_PATH . $folder . '/' . $image;
     
         if (file_exists($full_path)) {
-            return unlink($full_path);  // Xóa tệp nếu tồn tại
+            return unlink($full_path);
         } else {
-            return false;  // Trả về false nếu không tìm thấy tệp
+            return false; // File không tồn tại
         }
     }
-    
     
 
 ?>
