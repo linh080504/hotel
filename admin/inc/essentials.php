@@ -3,9 +3,12 @@ define('SITE_URL', 'http://127.0.0.1/csdl/');
 define('ABOUT_IMG_PATH', SITE_URL.'images/about/');
 define('CAROUSEL_IMG_PATH', SITE_URL.'images/carousel/');
 define('UPLOAD_IMAGE_PATH', $_SERVER['DOCUMENT_ROOT'].'/csdl/images/');
+define('FACILITIES_IMG_PATH', SITE_URL.'images/facilities/' );
+
+
 define('ABOUT_FOLDER', 'about');
 define('CAROUSEL_FOLDER', 'carousel/');
-
+define('FACILITIES_FOLDER', 'facilities/');
 
 
     function adminLogin() {
@@ -71,6 +74,35 @@ define('CAROUSEL_FOLDER', 'carousel/');
             return unlink($full_path);
         } else {
             return false; // File không tồn tại
+        }
+    }
+
+    function uploadSVGImage($file, $folder) {
+        $valid_extensions = ['image/svg+xml'];
+        $max_size = 1 * 1024 * 1024; // Giới hạn 1MB
+    
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if (!in_array(strtolower($ext), $valid_extensions)) {
+            return 'inv_img'; // Không đúng định dạng
+        }
+        if ($file['size'] > $max_size) {
+            return 'inv_size'; // File quá lớn
+        }
+    
+        $file_name = time() . '_' . $file['name']; // Đặt tên file
+        $full_folder_path = UPLOAD_IMAGE_PATH . $folder; // Đường dẫn đầy đủ đến thư mục đích
+    
+        // Tạo thư mục nếu chưa tồn tại
+        if (!is_dir($full_folder_path)) {
+            mkdir($full_folder_path, 0777, true);
+        }
+    
+        $path = $full_folder_path . '/' . $file_name;
+    
+        if (move_uploaded_file($file['tmp_name'], $path)) {
+            return $file_name; // Thành công
+        } else {
+            return 'upd_failed'; // Lỗi upload
         }
     }
     
