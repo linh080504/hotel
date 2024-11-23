@@ -33,6 +33,7 @@
         $res = select($q, $values, "i");
         $data = mysqli_fetch_assoc($res);
         echo json_encode($data);
+        exit;
     }
 
     if (isset($_POST['action']) && $_POST['action'] == 'upd_contacts') { 
@@ -92,6 +93,7 @@
                 </div>
             data;
         }
+        exit;
     }
     
     if (isset($_POST['action']) && $_POST['action'] == 'rem_member') {
@@ -108,6 +110,62 @@
         } else {
             echo 0;
         }
+        exit;
     }
+
+    if (isset($_POST['action']) && $_POST['action'] == 'update_room') {
+        $frm_data = filteration($_POST);
+        $features = filteration(json_decode($_POST['features']));
+        $facilities = filteration(json_decode($_POST['facilities']));
+        
+        // Cập nhật thông tin phòng
+        $q1 = "UPDATE `rooms` SET 
+                `name`=?, 
+                `area`=?, 
+                `price`=?, 
+                `quantity`=?, 
+                `adult`=?, 
+                `children`=?, 
+                `description`=?
+               WHERE `id`=?";
+        $values = [
+            $frm_data['name'], 
+            $frm_data['area'], 
+            $frm_data['price'], 
+            $frm_data['quantity'], 
+            $frm_data['adult'], 
+            $frm_data['children'], 
+            $frm_data['desc'], 
+            $frm_data['id']
+        ];
+    
+        if (!update($q1, $values, 'siiiiisi')) {
+            echo 0; // Trả về lỗi nếu không cập nhật được
+            exit;
+        }
+    
+        // Xóa các features và facilities cũ
+        $delete_features = "DELETE FROM `room_features` WHERE `room_id`=?";
+        $delete_facilities = "DELETE FROM `room_facilities` WHERE `room_id`=?";
+        delete($delete_features, [$frm_data['id']], 'i'); // Thêm 'i'
+        delete($delete_facilities, [$frm_data['id']], 'i'); // Thêm 'i'
+
+    
+        // Thêm các features và facilities mới
+        $q2 = "INSERT INTO `room_features`(`room_id`, `features_id`) VALUES (?,?)";
+        $q3 = "INSERT INTO `room_facilities`(`room_id`, `facilities_id`) VALUES (?,?)";
+    
+        foreach ($features as $f) {
+            insert($q2, [$frm_data['id'], $f], 'ii');
+        }
+    
+        foreach ($facilities as $f) {
+            insert($q3, [$frm_data['id'], $f], 'ii');
+        }
+    
+        echo 1; // Trả về thành công
+        exit;
+    }
+    
     
 ?>

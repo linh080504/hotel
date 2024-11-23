@@ -9,7 +9,7 @@ let member_picture_inp = document.getElementById("member_picture_inp");
 
 function loadGeneralData() {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -32,7 +32,7 @@ function get_general() {
     let site_about =document.getElementById('site_about');
     let shutdown_toggle =document.getElementById('shutdown_toggle');
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function() {
         general_data =JSON.parse(this.responseText);
@@ -57,7 +57,7 @@ general_s_form.addEventListener('submit', function(e){
 
 function upd_general(site_title_val, site_about_val) {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -77,7 +77,7 @@ function upd_general(site_title_val, site_about_val) {
 function upd_shutdown(val) {
     console.log("Shutdown value being sent: ", val); 
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -98,7 +98,7 @@ function get_contacts() {
     let iframe = document.getElementById('iframe');
 
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -142,7 +142,7 @@ function upd_contacts() {
     data_str += "action=upd_contacts"; // Thêm "action=" để chỉ định hành động
 
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -167,7 +167,7 @@ team_s_form.addEventListener('submit', function(e){
 })
 function get_member() {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
         if (this.status == 200) {
@@ -187,7 +187,7 @@ function add_member() {
     data.append('picture', member_picture_inp.files[0]); // File ảnh
 
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
 
     xhr.onload = function () {
         let myModal = document.getElementById('team-s');
@@ -221,7 +221,7 @@ function add_member() {
 
 function rem_member(val) {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/settings_crud.php", true);
+    xhr.open("POST", "/csdl/admin/ajax/settings_crud.php", true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function () {
