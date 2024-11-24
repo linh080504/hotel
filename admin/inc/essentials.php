@@ -4,11 +4,14 @@ define('ABOUT_IMG_PATH', SITE_URL.'images/about/');
 define('CAROUSEL_IMG_PATH', SITE_URL.'images/carousel/');
 define('UPLOAD_IMAGE_PATH', $_SERVER['DOCUMENT_ROOT'].'/csdl/images/');
 define('FACILITIES_IMG_PATH', SITE_URL.'images/facilities/' );
+define('ROOMS_IMG_PATH', SITE_URL.'images/rooms/' );
 
 
 define('ABOUT_FOLDER', 'about');
 define('CAROUSEL_FOLDER', 'carousel/');
 define('FACILITIES_FOLDER', 'facilities/');
+define('ROOMS_FOLDER', 'rooms/');
+
 
 
     function adminLogin() {
@@ -40,24 +43,36 @@ define('FACILITIES_FOLDER', 'facilities/');
         $valid_extensions = ['jpg', 'jpeg', 'png', 'webp'];
         $max_size = 2 * 1024 * 1024; // Giới hạn 2MB
     
+        // Kiểm tra nếu không có file
+        if (!isset($file['name']) || empty($file['name'])) {
+            return 'no_file'; // Không có file
+        }
+    
+        // Kiểm tra định dạng file
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
         if (!in_array(strtolower($ext), $valid_extensions)) {
             return 'inv_img'; // Không đúng định dạng
         }
+    
+        // Kiểm tra kích thước file
         if ($file['size'] > $max_size) {
             return 'inv_size'; // File quá lớn
         }
     
-        $file_name = time() . '_' . $file['name']; // Đặt tên file
+        // Đảm bảo tên file an toàn
+        $file_name = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $file['name']); // Loại bỏ ký tự đặc biệt
         $full_folder_path = UPLOAD_IMAGE_PATH . $folder; // Đường dẫn đầy đủ đến thư mục đích
     
-        // Tạo thư mục nếu chưa tồn tại
-        if (!is_dir($full_folder_path)) {
-            mkdir($full_folder_path, 0777, true);
+        // Kiểm tra và tạo thư mục nếu chưa tồn tại
+        if (!file_exists($full_folder_path)) {
+            if (!mkdir($full_folder_path, 0777, true)) {
+                return 'dir_failed'; // Lỗi tạo thư mục
+            }
         }
     
         $path = $full_folder_path . '/' . $file_name;
     
+        // Di chuyển file tải lên đến thư mục đích
         if (move_uploaded_file($file['tmp_name'], $path)) {
             return $file_name; // Thành công
         } else {
