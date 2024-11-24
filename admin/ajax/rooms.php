@@ -191,6 +191,8 @@
         $frm_data = filteration($_POST);
         $features = filteration(json_decode($_POST['features']));
         $facilities = filteration(json_decode($_POST['facilities']));
+        error_log("Features: " . print_r($features, true));
+        error_log("Facilities: " . print_r($facilities, true));
         
         // Cập nhật thông tin phòng
         $q1 = "UPDATE `rooms` SET 
@@ -230,11 +232,15 @@
         $q3 = "INSERT INTO `room_facilities`(`room_id`, `facilities_id`) VALUES (?,?)";
     
         foreach ($features as $f) {
-            insert($q2, [$frm_data['id'], $f], 'ii');
+            if (!insert($q2, [$frm_data['id'], $f], 'ii')) {
+                error_log("Error inserting feature: $f");
+            }
         }
     
         foreach ($facilities as $f) {
-            insert($q3, [$frm_data['id'], $f], 'ii');
+            if (!insert($q3, [$frm_data['id'], $f], 'ii')) {
+                error_log("Error inserting facility: $f");
+            }
         }
     
         echo 1; // Trả về thành công

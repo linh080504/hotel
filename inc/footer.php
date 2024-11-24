@@ -37,6 +37,29 @@
 
 <script> 
 
+    function arlert(type, msg, position='body') {
+        let bs_class = (type.toLowerCase() == 'success') ? 'alert-success' : 'alert-danger';
+        let element = document.createElement('div');
+        element.innerHTML = `
+            <div class="alert ${bs_class} alert-dismissible fade show custom-alert" role="alert">
+                <strong class="me-3">${msg}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+
+        if (position == 'body') {
+            document.body.append(element);
+        } else {
+            let target = document.getElementById(position);
+            if (target) {
+                target.appendChild(element);
+            } else {
+                console.error(`Position "${position}" not found.`);
+            }
+        }
+        setTimeout(() => element.remove(), 2000); // Xóa alert sau 2 giây
+    }
+
     function setActive(){
         let navbar = document.getElementById('nav-bar');
         let a_tag = navbar.getElementsByTagName('a');
@@ -49,5 +72,62 @@
             }
         }
     }
+
+    let register_form = document.getElementById('register-form');
+    register_form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+        let data = new FormData();
+
+        data.append('name', register_form.elements['name'].value);
+        data.append('email', register_form.elements['email'].value);
+        data.append('phonenum', register_form.elements['phonenum'].value);
+        data.append('address', register_form.elements['address'].value);
+        data.append('pincode', register_form.elements['pincode'].value);
+        data.append('dob', register_form.elements['dob'].value);
+        data.append('pass', register_form.elements['pass'].value);
+        data.append('cpass', register_form.elements['cpass'].value);
+        data.append('profile', register_form.elements['profile'].files[0]);
+        data.append('register', '');
+
+        var myModal = document.getElementById('registerModal');
+        var modal = bootstrap.Modal.getInstance(myModal);
+        modal.hide();
+
+        let xhr = new XMLHttpRequest(); 
+        xhr.open("POST", "ajax/login_register.php", true);
+
+        xhr.onload = function(){
+            console.log(this.responseText);
+            if(this.responseText == 'pass_mismatch') {
+                arlert('error', "Password Mismatch!");
+            }
+            else if(this.responseText == 'email_already') {
+                arlert('error', "Email is already registered!");
+            }
+            else if(this.responseText == 'phone_already') {
+                arlert('error', "Phone number is already registered!");
+            }
+            else if(this.responseText == 'inv_img'){
+                arlert('error', "Only JPG, WEBP & PNG images are allowed!");
+            }
+            else if(this.responseText == 'upd_failed'){
+                arlert('error', "Image upload failed!");
+            }
+            else if(this.responseText == 'mail_failed'){
+                arlert('error', "Cannot send confirmation email! Server down!");
+            }
+            else if(this.responseText == 'ins_failed'){
+                arlert('error', "Registration failed! Server down!");
+            }
+            else{
+                arlert('success', "Registration successful. Confirmation link sent to email!"); 
+                register_form.reset();
+            }
+        }
+
+    xhr.send(data);
+}); 
+
     setActive();
 </script>

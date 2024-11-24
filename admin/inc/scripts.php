@@ -2,30 +2,27 @@
 
 <script>
     function arlert(type, msg, position='body') {
-    let bs_class = (type.toLowerCase() == 'success') ? 'alert-success' : 'alert-danger';
-    let element = document.createElement('div');
-    element.innerHTML = `
-        <div class="alert ${bs_class} alert-dismissible fade show custom-alert" role="alert">
-            <strong class="me-3">${msg}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    `;
+        let bs_class = (type.toLowerCase() == 'success') ? 'alert-success' : 'alert-danger';
+        let element = document.createElement('div');
+        element.innerHTML = `
+            <div class="alert ${bs_class} alert-dismissible fade show custom-alert" role="alert">
+                <strong class="me-3">${msg}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
 
-    if (position == 'body') {
-        document.body.append(element);
-    } else {
-        let target = document.getElementById(position);
-        if (target) {
-            target.appendChild(element);
+        if (position == 'body') {
+            document.body.append(element);
         } else {
-            console.error(`Position "${position}" not found.`);
+            let target = document.getElementById(position);
+            if (target) {
+                target.appendChild(element);
+            } else {
+                console.error(`Position "${position}" not found.`);
+            }
         }
+        setTimeout(() => element.remove(), 2000); // Xóa alert sau 2 giây
     }
-    setTimeout(() => element.remove(), 2000); // Xóa alert sau 2 giây
-}
-
-
-
     
     function setActive(){
         let navbar = document.getElementById('dashboard-menu');
