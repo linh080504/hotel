@@ -19,6 +19,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" href="dashboard.php">Dashboard</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="user.php">User Manager</a>
+                        </li>
                         <li class="nav-item ">
                             <a class="nav-link text-white" href="rooms.php">Rooms</a>
                         </li>

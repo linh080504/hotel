@@ -2,12 +2,15 @@
 require('../admin/inc/db_config.php');
 require('../admin/inc/essentials.php');
 
+session_start();
+
+// Xử lý đăng ký
 if (isset($_POST['register'])) {
     $data = filteration($_POST);
 
     // Check if passwords match
     if ($data['pass'] !== $data['cpass']) {
-        echo 'pass_mismatch';
+        echo json_encode(['status' => 'error', 'message' => 'Passwords do not match!']);
         exit;
     }
 
@@ -20,17 +23,18 @@ if (isset($_POST['register'])) {
 
     if (mysqli_num_rows($u_exist) != 0) {
         $u_exist_fetch = mysqli_fetch_assoc($u_exist);
-        echo ($u_exist_fetch['email'] == $data['email']) ? 'email_already' : 'phone_already';
+        $message = ($u_exist_fetch['email'] == $data['email']) ? 'Email already exists!' : 'Phone number already exists!';
+        echo json_encode(['status' => 'error', 'message' => $message]);
         exit;
     }
 
     // Upload profile image
     $img = uploadUserImage($_FILES['profile']);
     if ($img == 'inv_img') {
-        echo 'inv_img';
+        echo json_encode(['status' => 'error', 'message' => 'Invalid image file!']);
         exit;
     } elseif ($img == 'upd_failed') {
-        echo 'upd_failed';
+        echo json_encode(['status' => 'error', 'message' => 'Failed to upload image!']);
         exit;
     }
 
@@ -51,14 +55,18 @@ if (isset($_POST['register'])) {
         $data['dob'], 
         $img, 
         $enc_pass, 
-        1, // is_verified: True since we're skipping email verification
+        1, // is_verified: True
         1, // status: Active
         $data['email']
     ];
 
     if (insert($query, $values, 'ssssssssss')) {
-        echo 1; // Success
+        echo json_encode(['status' => 'success', 'message' => 'Registration successful!']);
     } else {
-        echo 'ins_failed'; // Insert failed
+        echo json_encode(['status' => 'error', 'message' => 'Failed to register user!']);
     }
+    exit;
 }
+
+echo json_encode(['status' => 'error', 'message' => 'Invalid request!']);
+?>

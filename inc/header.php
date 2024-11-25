@@ -1,4 +1,5 @@
 <?php 
+session_start();
   require('admin/inc/db_config.php');
   require('admin/inc/essentials.php');
     // Câu lệnh SQL
@@ -34,21 +35,23 @@
       </ul>
       <div class="d-flex">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-outline-dark shadow-none me-lg-2 me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
-        Login
-        </button>
-        <button type="button" class="btn btn-outline-dark shadow-none me-lg-2 me-3" data-bs-toggle="modal" data-bs-target="#registerModal">
-        Register
-        </button>
+        <?php if (isset($_SESSION['userLogin']) && $_SESSION['userLogin'] == true): ?>
+          <!-- Nút Logout -->
+          <a href="/csdl/ajax/logout.php" class="btn btn-outline-dark shadow-none me-lg-2 me-2">Logout</a>
+        <?php else: ?>
+          <!-- Nút Login & Register -->
+          <button type="button" class="btn btn-outline-dark shadow-none me-lg-2 me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+          <button type="button" class="btn btn-outline-dark shadow-none me-lg-2 me-3" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+        <?php endif; ?>
     </div>
     </div>
   </div>
 </nav>
 <!-- Modal Login -->
-<div class="modal fade" id="loginModal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-        <form>
+        <form id="loginForm" method="POST">
             <div class="modal-header">
                 <h5 class="modal-title d-flex align-items-center">
                 <i class="bi bi-person-circle fs-3 me-2"></i> User Login
@@ -58,17 +61,16 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <label class="form-label">Email address</label>
-                    <input type="email" class="form-control shadow-none">
+                    <input id="email" name="email" type="email" class="form-control shadow-none" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="email" class="form-control shadow-none">
+                    <input id="password" name="password" type="password" class="form-control shadow-none" required>
                 </div>
                 <div class="d-flex align-items-center justify-content-between mb-2">
-                    <button type="submit" class="btn btn-dark shadow-none">LOGIN </button>
+                    <button type="submit" name="login" class="btn btn-dark shadow-none">LOGIN</button>
                     <a href="javascript: void(0)" class="text-secondary text-decoration-none">Forgot Password</a>
                 </div>
-                
             </div>
         </form>
     </div>
@@ -155,3 +157,36 @@
   </div>
 </div>
 <br><br>
+
+<?php
+if (isset($_POST['login'])) {
+    $email = htmlspecialchars(trim($_POST['email']));
+    $password = htmlspecialchars(trim($_POST['password']));
+
+    // Kiểm tra email và mật khẩu
+    $query = "SELECT * FROM `user_cred` WHERE `email` = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows == 1) {
+        $user = $result->fetch_assoc();
+
+        // Kiểm tra mật khẩu
+        if (password_verify($password, $user['password'])) {
+            // Đăng nhập thành công
+            $_SESSION['userLogin'] = true;
+            $_SESSION['userId'] = $user['id'];
+            $_SESSION['userName'] = $user['name'];
+
+            echo "<script>alert('Login Successful! Redirecting to dashboard...');</script>";
+            echo "<script>window.location.href = 'index.php';</script>";
+        } else {
+            echo "<script>alert('Incorrect password!');</script>";
+        }
+    } else {
+        echo "<script>alert('No user found with this email!');</script>";
+    }
+}
+?>
